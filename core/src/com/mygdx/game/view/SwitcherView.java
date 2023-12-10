@@ -2,6 +2,7 @@ package com.mygdx.game.view;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.Difficulty;
 import com.mygdx.game.MemoryHelper;
 
 public class SwitcherView extends BaseView {
@@ -31,7 +32,7 @@ public class SwitcherView extends BaseView {
             else if (stateIdx == 2) stateIdx = 0;
 
             System.out.println(stateIdx);
-            MemoryHelper.saveDifficultyLevel(stateIdx);
+            MemoryHelper.saveDifficultyLevel(Difficulty.getDifficultyByIdx(stateIdx));
 
             System.out.println("loaded value: " + MemoryHelper.loadDifficultyLevel());
             return true;

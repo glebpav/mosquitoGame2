@@ -29,7 +29,7 @@ public class SettingsScreen extends ScreenAdapter {
         BackgroundView background = new BackgroundView("backgrounds/settingsBG.jpg");
         LabelView titleLabel = new LabelView(myGdxGame.largeFont.bitmapFont, "Settings", 0, 900);
         LabelView difficultyLabel = new LabelView(myGdxGame.commonFont.bitmapFont, "difficulty: ", 100, 500);
-        SwitcherView switcher = new SwitcherView(350, 500, MemoryHelper.loadDifficultyLevel() ,myGdxGame.accentFont.bitmapFont);
+        SwitcherView switcher = new SwitcherView(350, 500, MemoryHelper.loadDifficultyLevel().difficultyIdx ,myGdxGame.accentFont.bitmapFont);
         ImageView buttonBack = new ImageView(100, 900, 100, 100, "icons/backIcon.png");
 
         titleLabel.alignCenter();
