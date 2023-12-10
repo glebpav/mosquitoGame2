@@ -101,6 +101,11 @@ public class MenuScreen extends ScreenAdapter {
         }
     };
 
+    @Override
+    public void resize(int width, int height) {
+        myGdxGame.viewport.update(width, height);
+    }
+
     BaseView.OnClickListener buttonExitClicked = new BaseView.OnClickListener() {
         @Override
         public void onClick() {

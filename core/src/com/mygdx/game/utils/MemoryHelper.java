@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
@@ -10,12 +10,12 @@ public class MemoryHelper {
     public static void saveDifficultyLevel(Difficulty difficulty) {
         if (difficulty == null) return;
         System.out.println("save difficulty level: " + difficulty.difficultyIdx);
-        prefs.putInteger("difficultyLevel", difficulty.difficultyIdx);
+        prefs.putInteger("difficultyLevel1", difficulty.difficultyIdx);
     }
 
     public static Difficulty loadDifficultyLevel() {
-        if (prefs.contains("difficultyLevel")) {
-            int idx = prefs.getInteger("difficultyLevel");
+        if (prefs.contains("difficultyLevel1")) {
+            int idx = prefs.getInteger("difficultyLevel1");
             if (idx == 0) return Difficulty.EASY;
             else if (idx == 1) return Difficulty.MEDIUM;
             else if (idx == 2) return Difficulty.HARD;

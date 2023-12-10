@@ -2,8 +2,8 @@ package com.mygdx.game.view;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.game.Difficulty;
-import com.mygdx.game.MemoryHelper;
+import com.mygdx.game.utils.Difficulty;
+import com.mygdx.game.utils.MemoryHelper;
 
 public class SwitcherView extends BaseView {
 
@@ -19,7 +19,7 @@ public class SwitcherView extends BaseView {
 
     @Override
     public void draw(SpriteBatch batch) {
-        label.message = switcherStates[stateIdx];
+        label.setMessage(switcherStates[stateIdx]);
         label.draw(batch);
     }
 

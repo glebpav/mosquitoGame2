@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.mygdx.game.MemoryHelper;
+import com.mygdx.game.utils.MemoryHelper;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.view.BackgroundView;
 import com.mygdx.game.view.BaseView;
@@ -13,7 +13,6 @@ import com.mygdx.game.view.LabelView;
 import com.mygdx.game.view.SwitcherView;
 
 import java.util.ArrayList;
-import java.util.prefs.BackingStoreException;
 
 public class SettingsScreen extends ScreenAdapter {
 

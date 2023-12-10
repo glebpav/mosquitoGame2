@@ -3,7 +3,7 @@ package com.mygdx.game.view;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Disposable;
-import com.mygdx.game.GameSettings;
+import com.mygdx.game.utils.GameSettings;
 
 public class BackgroundView extends BaseView implements Disposable {
 

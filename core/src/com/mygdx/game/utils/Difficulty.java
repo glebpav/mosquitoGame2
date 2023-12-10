@@ -1,6 +1,4 @@
-package com.mygdx.game;
-
-import com.sun.org.apache.bcel.internal.generic.PUSH;
+package com.mygdx.game.utils;
 
 public enum Difficulty {
 

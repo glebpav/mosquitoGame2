@@ -6,8 +6,8 @@ import com.badlogic.gdx.utils.Disposable;
 
 public class BaseView {
 
-    int x;
-    int y;
+    float x;
+    float y;
     int width;
     int height;
 
@@ -34,7 +34,11 @@ public class BaseView {
     }
 
     public boolean isHit(int tx, int ty) {
-        return true;
+        if (tx > x && tx < x + width && ty > y && ty < y + height) {
+            if (onClickListener != null) onClickListener.onClick();
+            return true;
+        }
+        return false;
     }
 
     public interface OnClickListener {

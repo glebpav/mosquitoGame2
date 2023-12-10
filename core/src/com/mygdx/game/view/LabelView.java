@@ -4,12 +4,12 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Disposable;
-import com.mygdx.game.GameSettings;
+import com.mygdx.game.utils.GameSettings;
 
 public class LabelView extends BaseView implements Disposable {
 
     BitmapFont font;
-    String message;
+    private String message;
 
     public LabelView(BitmapFont font, String message, int x, int y) {
         super(x, y);
@@ -22,11 +22,24 @@ public class LabelView extends BaseView implements Disposable {
         height = (int) gl.height;
 
         setY(y);
+
+        if (x == -1) alignCenter();
     }
 
     public void setY(int y) {
         this.y = y;
         this.y += height;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+        GlyphLayout gl = new GlyphLayout(font, message);
+        width = (int) gl.width;
+        height = (int) gl.height;
     }
 
     public void alignCenter() {
