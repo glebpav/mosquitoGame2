@@ -2,7 +2,6 @@ package com.mygdx.game.screens;
 
 import com.badlogic.gdx.ScreenAdapter;
 import com.mygdx.game.MyGdxGame;
-import com.mygdx.game.view.Background;
 
 public class GameScreen extends ScreenAdapter {
 

@@ -22,6 +22,7 @@ public class MyGdxGame extends Game {
 
     public FontHelper largeFont;
     public FontHelper commonFont;
+    public FontHelper accentFont;
 
     public MenuScreen menuScreen;
     public GameScreen gameScreen;
@@ -37,11 +38,14 @@ public class MyGdxGame extends Game {
 
         commonFont = new FontHelper(50, "fonts/arnamu.ttf", Color.WHITE);
         largeFont = new FontHelper(100, "fonts/arnamu.ttf", Color.WHITE);
+        accentFont = new FontHelper(50, "fonts/arnamu.ttf", Color.BLUE);
 
         menuScreen = new MenuScreen(this);
         gameScreen = new GameScreen(this);
         aboutScreen = new AboutScreen(this);
         settingsScreen = new SettingsScreen(this);
+
+        System.out.println("difficulty level:" + MemoryHelper.loadDifficultyLevel());
 
         setScreen(menuScreen);
     }

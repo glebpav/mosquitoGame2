@@ -3,22 +3,16 @@ package com.mygdx.game.view;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Disposable;
 import com.mygdx.game.GameSettings;
 
-import java.awt.ScrollPane;
-
-public class Label {
+public class LabelView extends BaseView implements Disposable {
 
     BitmapFont font;
     String message;
 
-    int x;
-    private int y;
-
-    int width;
-    int height;
-
-    public Label(BitmapFont font, String message, int x, int y) {
+    public LabelView(BitmapFont font, String message, int x, int y) {
+        super(x, y);
         this.font = font;
         this.message = message;
         this.x = x;
@@ -39,14 +33,21 @@ public class Label {
         x = GameSettings.SCREEN_WIDTH / 2 - width / 2;
     }
 
+    @Override
     public void draw(SpriteBatch spriteBatch) {
         font.draw(spriteBatch, message, x, y);
     }
 
-    public boolean hit(int tx, int ty) {
-        return tx > x && tx < x + width && ty < y && ty > y - height;
+    @Override
+    public boolean isHit(int tx, int ty) {
+        if (tx > x && tx < x + width && ty < y && ty > y - height) {
+            if (onClickListener != null) onClickListener.onClick();
+            return true;
+        }
+        return false;
     }
 
+    @Override
     public void dispose() {
         // ...
     }
