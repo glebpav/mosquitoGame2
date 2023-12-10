@@ -11,7 +11,8 @@ public class SoundsHelper {
 
     1. Implement butterfly
     2. Implement Progress bar
-    3. Pause
+    3. State paused
+    4. State loosed
 
      */
 
