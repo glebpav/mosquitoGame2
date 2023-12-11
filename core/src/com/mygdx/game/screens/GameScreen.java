@@ -2,7 +2,6 @@ package com.mygdx.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.assets.loaders.MusicLoader;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -17,10 +16,9 @@ import com.mygdx.game.view.BaseView;
 import com.mygdx.game.view.Blackout;
 import com.mygdx.game.view.CharacterView;
 import com.mygdx.game.view.LabelView;
+import com.mygdx.game.view.ProgressBarView;
 
 import java.util.ArrayList;
-
-import javax.swing.text.View;
 
 public class GameScreen extends ScreenAdapter {
 
@@ -30,6 +28,7 @@ public class GameScreen extends ScreenAdapter {
     Difficulty difficulty;
 
     long sessionTimeBegin;
+    float healthPoints;
 
     ArrayList<BaseView> viewGameArray;
     ArrayList<BaseView> viewPassedArray;
@@ -37,10 +36,13 @@ public class GameScreen extends ScreenAdapter {
     ArrayList<BaseView> viewPausedArray;
 
     ArrayList<String> mosquitoTilesPathArray;
+    ArrayList<String> butterflyTilesPathArray;
 
     ArrayList<CharacterView> mosquitoArray;
+    ArrayList<CharacterView> butterflyArray;
 
     LabelView timeView;
+    ProgressBarView progressBarView;
 
     public GameScreen(final MyGdxGame myGdxGame) {
         this.myGdxGame = myGdxGame;
@@ -49,18 +51,29 @@ public class GameScreen extends ScreenAdapter {
         viewPassedArray = new ArrayList<>();
         viewPausedArray = new ArrayList<>();
 
+        butterflyArray = new ArrayList<>();
         mosquitoArray = new ArrayList<>();
+        butterflyTilesPathArray = new ArrayList<>();
         mosquitoTilesPathArray = new ArrayList<>();
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10; i++)
             mosquitoTilesPathArray.add("tiles/mosq" + i + ".png");
-        }
+
+        for (int i = 0; i < 5; i++)
+            butterflyTilesPathArray.add("tiles/butterFly" + i + ".png");
 
         viewPassedArray.add(new Blackout());
+        viewLoosedArray.add(new Blackout());
 
         viewPassedArray.add(new LabelView(
                 myGdxGame.largeFont.bitmapFont,
                 "Our congratulations!",
+                -1, 900
+        ));
+
+        viewLoosedArray.add(new LabelView(
+                myGdxGame.largeFont.bitmapFont,
+                "Whooops, you loosed(((",
                 -1, 900
         ));
 
@@ -78,13 +91,13 @@ public class GameScreen extends ScreenAdapter {
         });
 
         viewPassedArray.add(buttonReturnMenu);
+        viewLoosedArray.add(buttonReturnMenu);
 
         timeView = new LabelView(
                 myGdxGame.commonFont.bitmapFont,
                 "session time: ",
                 200, 500
         );
-
 
         viewPassedArray.add(timeView);
     }
@@ -97,24 +110,51 @@ public class GameScreen extends ScreenAdapter {
 
         viewGameArray.add(new BackgroundView("backgrounds/gameBG.jpg"));
 
+        progressBarView = new ProgressBarView(
+                100, 30,
+                300, 40,
+                difficulty.healthPoints
+        );
+
+        viewGameArray.add(progressBarView);
+
         for (int i = 0; i < difficulty.countOfMosquito; i++) {
+
             double angle = Math.random() * 2 * Math.PI;
-            CharacterView characterView = new CharacterView(
+
+            CharacterView mosquitoView = new CharacterView(
                     GameSettings.SCREEN_WIDTH / 2,
                     GameSettings.SCREEN_HEIGHT / 2,
                     150, 150,
-                    Math.cos(angle) * difficulty.speed,
-                    Math.sin(angle) * difficulty.speed,
+                    Math.cos(angle) * difficulty.getSpeed(),
+                    Math.sin(angle) * difficulty.getSpeed(),
                     mosquitoTilesPathArray,
                     "tiles/mosq10.png"
             );
-            characterView.setOnKillListener(onKillListener);
-            characterView.setOnMosquitoClicked(onClickMosquitoListener);
-            mosquitoArray.add(characterView);
-            viewGameArray.add(characterView);
+
+            angle = Math.random() * 2 * Math.PI;
+
+            CharacterView butterflyView = new CharacterView(
+                    GameSettings.SCREEN_WIDTH / 2,
+                    GameSettings.SCREEN_HEIGHT / 2,
+                    150, 150,
+                    Math.cos(angle) * difficulty.getSpeed(),
+                    Math.sin(angle) * difficulty.getSpeed(),
+                    butterflyTilesPathArray
+            );
+
+            butterflyView.setOnClickListener(onButterflyClickListener);
+            mosquitoView.setOnKillListener(onKillListener);
+            mosquitoView.setOnMosquitoClicked(onClickMosquitoListener);
+
+            mosquitoArray.add(mosquitoView);
+            butterflyArray.add(butterflyView);
+            viewGameArray.add(mosquitoView);
+            viewGameArray.add(butterflyView);
         }
 
         gameState = GameState.IS_PLAYING;
+        healthPoints = difficulty.healthPoints;
         sessionTimeBegin = TimeUtils.millis();
     }
 
@@ -126,23 +166,23 @@ public class GameScreen extends ScreenAdapter {
         for (CharacterView character : mosquitoArray)
             character.move();
 
+        for (CharacterView characterView : butterflyArray)
+            characterView.move();
+
         ScreenUtils.clear(Color.WHITE);
         myGdxGame.camera.update();
         myGdxGame.batch.setProjectionMatrix(myGdxGame.camera.combined);
 
         myGdxGame.batch.begin();
 
-        if (gameState == GameState.LOOSED) {
-            for (BaseView view : viewLoosedArray)
-                view.draw(myGdxGame.batch);
-        }
-
         if (gameState == GameState.ON_PAUSE) {
             for (BaseView view : viewPausedArray)
                 view.draw(myGdxGame.batch);
         }
 
-        if (gameState == GameState.IS_PLAYING || gameState == GameState.PASSED) {
+        if (gameState == GameState.IS_PLAYING
+                || gameState == GameState.PASSED
+                || gameState == GameState.LOOSED) {
             int previousSize = viewGameArray.size();
             for (int i = 0; i < viewGameArray.size(); i++) {
                 viewGameArray.get(i).draw(myGdxGame.batch);
@@ -153,6 +193,10 @@ public class GameScreen extends ScreenAdapter {
             }
             if (gameState == GameState.PASSED) {
                 for (BaseView view : viewPassedArray)
+                    view.draw(myGdxGame.batch);
+            }
+            if (gameState == GameState.LOOSED) {
+                for (BaseView view : viewLoosedArray)
                     view.draw(myGdxGame.batch);
             }
         }
@@ -183,6 +227,11 @@ public class GameScreen extends ScreenAdapter {
                     view.isHit((int) myGdxGame.touch.x, (int) myGdxGame.touch.y);
             }
 
+            if (gameState == GameState.LOOSED) {
+                for (BaseView view : viewLoosedArray)
+                    view.isHit((int) myGdxGame.touch.x, (int) myGdxGame.touch.y);
+            }
+
         }
     }
 
@@ -205,6 +254,15 @@ public class GameScreen extends ScreenAdapter {
             if (view.isAlive) {
                 SoundsHelper.playMosquitoSound();
             }
+        }
+    };
+
+    BaseView.OnClickListener onButterflyClickListener = new BaseView.OnClickListener() {
+        @Override
+        public void onClick() {
+            healthPoints -= GameSettings.BUTTERFLY_DAMAGE;
+            if (healthPoints <= 0) gameState = GameState.LOOSED;
+            progressBarView.update(healthPoints);
         }
     };
 }

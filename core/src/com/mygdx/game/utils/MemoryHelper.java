@@ -10,7 +10,7 @@ public class MemoryHelper {
     public static void saveDifficultyLevel(Difficulty difficulty) {
         if (difficulty == null) return;
         System.out.println("save difficulty level: " + difficulty.difficultyIdx);
-        prefs.putInteger("difficultyLevel1", difficulty.difficultyIdx);
+        prefs.putInteger("difficultyLevel1", difficulty.difficultyIdx).flush();
     }
 
     public static Difficulty loadDifficultyLevel() {

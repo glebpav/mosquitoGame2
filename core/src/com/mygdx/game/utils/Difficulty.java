@@ -28,7 +28,7 @@ public enum Difficulty {
     public final int countOfMosquito;
     public final int countOfButterflies;
     public final int healthPoints;
-    public final int speed;
+    private final int speed;
 
     Difficulty(int difficultyIdx, int countOfMosquito, int countOfButterFlies, int healthPoints, int speed) {
         this.difficultyIdx = difficultyIdx;
@@ -43,5 +43,9 @@ public enum Difficulty {
         else if (idx == 1) return MEDIUM;
         else if (idx == 2) return HARD;
         return null;
+    }
+
+    public float getSpeed() {
+        return  (0.8f + (float) Math.random() * 0.4f) * speed;
     }
 }

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class CharacterView extends BaseView implements Movable, Disposable {
 
     public boolean isAlive;
+    public boolean canDie;
 
     long killedTime;
 
@@ -42,9 +43,27 @@ public class CharacterView extends BaseView implements Movable, Disposable {
             textureList.add(new Texture(path));
 
         deathTile = new Texture(pathToDeathTile);
+        canDie = true;
 
         frameCounter = 0;
         isAlive = true;
+    }
+
+    public CharacterView(int x, int y, int width, int height, double velocityX, double velocityY,
+                         ArrayList<String> pathsList) {
+        super(x, y, width, height);
+        this.velocityX = velocityX;
+        this.velocityY = velocityY;
+        textureList = new ArrayList<>();
+
+        frameMultiplexer = 2;
+
+        for (String path : pathsList)
+            textureList.add(new Texture(path));
+
+        frameCounter = 0;
+        isAlive = true;
+        canDie = false;
     }
 
     public void setOnKillListener(OnKillListener onKillListener) {
@@ -70,11 +89,13 @@ public class CharacterView extends BaseView implements Movable, Disposable {
     @Override
     public boolean isHit(int tx, int ty) {
         if (super.isHit(tx, ty) && isAlive) {
-            onMosquitoClicked.onClicked(this);
-            velocityX = 0;
-            velocityY = 0;
-            isAlive = false;
-            killedTime = TimeUtils.millis();
+            if (canDie) {
+                onMosquitoClicked.onClicked(this);
+                velocityX = 0;
+                velocityY = 0;
+                isAlive = false;
+                killedTime = TimeUtils.millis();
+            }
             return true;
         }
         return false;

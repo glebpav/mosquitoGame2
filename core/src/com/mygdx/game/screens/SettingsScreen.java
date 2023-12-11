@@ -10,6 +10,7 @@ import com.mygdx.game.view.BackgroundView;
 import com.mygdx.game.view.BaseView;
 import com.mygdx.game.view.ImageView;
 import com.mygdx.game.view.LabelView;
+import com.mygdx.game.view.SliderView;
 import com.mygdx.game.view.SwitcherView;
 
 import java.util.ArrayList;
@@ -40,6 +41,17 @@ public class SettingsScreen extends ScreenAdapter {
         viewArray.add(difficultyLabel);
         viewArray.add(switcher);
         viewArray.add(buttonBack);
+    }
+
+    @Override
+    public void show() {
+        Gdx.input.setInputProcessor(new SliderView.SliderInputProcessor(myGdxGame.camera));
+    }
+
+    @Override
+    public void hide() {
+        System.out.println("screen settings is hided");
+        Gdx.input.setInputProcessor(null);
     }
 
     @Override
