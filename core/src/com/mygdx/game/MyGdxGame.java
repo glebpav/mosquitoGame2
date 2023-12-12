@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.mygdx.game.screens.AboutScreen;
 import com.mygdx.game.screens.GameScreen;
 import com.mygdx.game.screens.MenuScreen;
@@ -20,7 +22,7 @@ public class MyGdxGame extends Game {
 
     public OrthographicCamera camera;
     public Vector3 touch;
-    public ExtendViewport viewport;
+    public FitViewport viewport;
 
     public FontHelper largeFont;
     public FontHelper commonFont;
@@ -37,7 +39,7 @@ public class MyGdxGame extends Game {
         touch = new Vector3();
         camera = new OrthographicCamera(GameSettings.SCREEN_WIDTH, GameSettings.SCREEN_HEIGHT);
         camera.setToOrtho(false);
-        viewport = new ExtendViewport(GameSettings.SCREEN_WIDTH, GameSettings.SCREEN_HEIGHT, camera);
+        viewport = new FitViewport(GameSettings.SCREEN_WIDTH, GameSettings.SCREEN_HEIGHT, camera);
 
         commonFont = new FontHelper(50, "fonts/arnamu.ttf", Color.WHITE);
         largeFont = new FontHelper(100, "fonts/arnamu.ttf", Color.WHITE);
@@ -48,7 +50,7 @@ public class MyGdxGame extends Game {
         aboutScreen = new AboutScreen(this);
         settingsScreen = new SettingsScreen(this);
 
-        System.out.println("difficulty level:" + MemoryHelper.loadDifficultyLevel());
+        // System.out.println("difficulty level:" + MemoryHelper.loadDifficultyLevel());
 
         setScreen(menuScreen);
         SoundsHelper.playBackSound();

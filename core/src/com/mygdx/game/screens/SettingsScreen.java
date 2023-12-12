@@ -19,6 +19,8 @@ public class SettingsScreen extends ScreenAdapter {
 
     MyGdxGame myGdxGame;
 
+    SliderView sliderView;
+
     ArrayList<BaseView> viewArray;
 
     public SettingsScreen(MyGdxGame myGdxGame) {
@@ -29,28 +31,33 @@ public class SettingsScreen extends ScreenAdapter {
         BackgroundView background = new BackgroundView("backgrounds/settingsBG.jpg");
         LabelView titleLabel = new LabelView(myGdxGame.largeFont.bitmapFont, "Settings", 0, 900);
         LabelView difficultyLabel = new LabelView(myGdxGame.commonFont.bitmapFont, "difficulty: ", 100, 500);
+        LabelView soundLabel = new LabelView(myGdxGame.commonFont.bitmapFont, "sounds: ", 100, 300);
         SwitcherView switcher = new SwitcherView(350, 500, MemoryHelper.loadDifficultyLevel().difficultyIdx ,myGdxGame.accentFont.bitmapFont);
         ImageView buttonBack = new ImageView(100, 900, 100, 100, "icons/backIcon.png");
+        sliderView = new SliderView(350, 300, 300, 60);
 
         titleLabel.alignCenter();
 
         buttonBack.setOnClickListener(onButtonBackClicked);
+        sliderView.setOnSliderNewValueListener(onSliderNewValueListener);
 
         viewArray.add(background);
         viewArray.add(titleLabel);
         viewArray.add(difficultyLabel);
         viewArray.add(switcher);
         viewArray.add(buttonBack);
+        viewArray.add(soundLabel);
+        viewArray.add(sliderView);
     }
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(new SliderView.SliderInputProcessor(myGdxGame.camera));
+        Gdx.input.setInputProcessor(new SliderView.SliderInputProcessor(myGdxGame.camera, sliderView));
     }
 
     @Override
     public void hide() {
-        System.out.println("screen settings is hided");
+        // System.out.println("screen settings is hided");
         Gdx.input.setInputProcessor(null);
     }
 
@@ -86,6 +93,13 @@ public class SettingsScreen extends ScreenAdapter {
         @Override
         public void onClick() {
             myGdxGame.setScreen(myGdxGame.menuScreen);
+        }
+    };
+
+    SliderView.OnSliderNewValueListener onSliderNewValueListener = new SliderView.OnSliderNewValueListener() {
+        @Override
+        public void onNewValue(float newValue) {
+            System.out.println("new value: " + newValue);
         }
     };
 }

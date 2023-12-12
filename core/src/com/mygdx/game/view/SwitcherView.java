@@ -31,10 +31,10 @@ public class SwitcherView extends BaseView {
             else if(stateIdx == 1) stateIdx = 2;
             else if (stateIdx == 2) stateIdx = 0;
 
-            System.out.println(stateIdx);
+            // System.out.println(stateIdx);
             MemoryHelper.saveDifficultyLevel(Difficulty.getDifficultyByIdx(stateIdx));
 
-            System.out.println("loaded value: " + MemoryHelper.loadDifficultyLevel());
+            // System.out.println("loaded value: " + MemoryHelper.loadDifficultyLevel());
             return true;
         }
 

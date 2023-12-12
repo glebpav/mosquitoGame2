@@ -2,6 +2,7 @@ package com.mygdx.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.view.BackgroundView;
@@ -85,7 +86,10 @@ public class MenuScreen extends ScreenAdapter {
     void handleInput() {
         if (Gdx.input.justTouched()) {
             myGdxGame.touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-            myGdxGame.touch = myGdxGame.camera.unproject(myGdxGame.touch);
+            // myGdxGame.touch = myGdxGame.camera.unproject(myGdxGame.touch);
+            Vector2 vector2 = myGdxGame.viewport.unproject(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
+            myGdxGame.touch.set(vector2.x, vector2.y, 0);
+            System.out.println("coords 2: " + vector2.x + " - " + vector2.y);
 
             for (BaseView view : viewArray) {
                 view.isHit((int) myGdxGame.touch.x, (int) myGdxGame.touch.y);
@@ -96,14 +100,15 @@ public class MenuScreen extends ScreenAdapter {
     BaseView.OnClickListener buttonStartClicked = new BaseView.OnClickListener() {
         @Override
         public void onClick() {
-            System.out.println("button start was pressed");
+            // System.out.println("button start was pressed");
             myGdxGame.setScreen(myGdxGame.gameScreen);
         }
     };
 
     @Override
     public void resize(int width, int height) {
-        myGdxGame.viewport.update(width, height);
+        System.out.println("on resize: " + width + " - " + height);
+        myGdxGame.viewport.update(width, height, true);
     }
 
     BaseView.OnClickListener buttonExitClicked = new BaseView.OnClickListener() {
